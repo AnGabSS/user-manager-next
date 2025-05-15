@@ -16,8 +16,6 @@ export default function Home() {
     >
       <section className="w-5/6 md:w-2/3">
         <CardLogin />
-        {/* <UserTable />*/}
-        {/* <UserForm isEdit={false} />  */}
       </section>
     </div>
   );
