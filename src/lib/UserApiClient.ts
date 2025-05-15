@@ -8,3 +8,18 @@ export const userApiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+userApiClient.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response?.status === 401) {
+      if (typeof window !== 'undefined') {
+        window.location.href = '/'
+      }
+    }
+
+    return Promise.reject(error)
+  }
+)
+
+export default userApiClient

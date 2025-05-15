@@ -2,14 +2,26 @@ import { generateMockUsers } from "@/mock/generateUsers";
 import { useEffect, useState } from "react";
 import TableComponent from "../TableComponent";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { UserResponseInterface } from "@/types/UserResponseInterface";
+import { getUsers } from "@/api/get-users";
+import { isAxiosError } from "axios";
 
 const UserTable = () => {
-  const [data, setData] = useState<object[]>([]);
+  const [data, setData] = useState<UserResponseInterface[]>([]);
   const [type, setType] = useState<"all" | "inactive">("all");
 
-  useEffect(() => {
-    const users = generateMockUsers(10).data.items;
+  const getUsersHere = async() => {
+    const users = await (await getUsers()).data
     setData(users);
+  }
+
+  useEffect(() => {
+     try{ getUsersHere()} 
+     catch(error){
+        if(isAxiosError(error) && error.code == "401"){
+            window.location.href = '/edit'
+        }
+    }
   }, []);
 
   if (data.length === 0) return <p>Carregando...</p>;

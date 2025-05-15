@@ -1,8 +1,7 @@
-import CardLogin from "@/components/CardLogin";
+import UserTable from "@/components/UserTable";
 import background from "../../public/background.png";
-import UserForm from "@/components/UserForm/UserForm";
 
-export default function Home() {
+export default function Users() {
   return (
     <div
       className="flex flex-col items-center justify-center gap-4 p-4 min-h-screen"
@@ -15,9 +14,7 @@ export default function Home() {
       }}
     >
       <section className="w-5/6 md:w-2/3">
-        <CardLogin />
-        {/* <UserTable />*/}
-        {/* <UserForm isEdit={false} />  */}
+        <UserTable />
       </section>
     </div>
   );

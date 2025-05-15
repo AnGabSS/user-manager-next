@@ -16,3 +16,5 @@ export const signinUserSchema = z.object({
     })
     .min(1, "Senha é obrigatória"),
 });
+
+export type SigninUserSchema = z.infer<typeof signinUserSchema>
