@@ -1,3 +1,4 @@
+'use client'
 import UserTable from "@/components/UserTable";
 import background from "../../public/background.png";
 

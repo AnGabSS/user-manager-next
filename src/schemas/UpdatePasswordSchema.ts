@@ -15,4 +15,4 @@ export const updatePasswordSchema = z.object({
         .min(1, "Senha antiga é obrigatória"),
 });
 
-export type updatePasswordSchema = z.infer<typeof updatePasswordSchema>
+export type UpdatePasswordSchema = z.infer<typeof updatePasswordSchema>

@@ -9,6 +9,19 @@ export const userApiClient = axios.create({
   },
 });
 
+userApiClient.interceptors.request.use(
+  (config) => {
+    if (typeof window !== 'undefined') {
+      const token = sessionStorage.getItem("token");
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 userApiClient.interceptors.response.use(
   response => response,
   error => {

@@ -1,9 +1,13 @@
 import { UserResponseInterface } from "./UserResponseInterface";
 
-export interface PaginatedUserResponseInterface {
-  data: UserResponseInterface[];
-  total: number;
-  page: number;
+export interface PaginatedUserFieldsInterface {
+  items: UserResponseInterface[];
+  currentPage: number;
+  lastPage: number;
   perPage: number;
-  totalPages: number;
+  total: number;
+}
+
+export interface PaginatedUserResponseInterface {
+  data: PaginatedUserFieldsInterface;
 }

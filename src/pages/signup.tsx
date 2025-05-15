@@ -1,4 +1,4 @@
-import CardLogin from "@/components/CardLogin";
+'use client'
 import background from "../../public/background.png";
 import UserForm from "@/components/UserForm/UserForm";
 
@@ -16,7 +16,7 @@ export default function Signup() {
     >
       <section className="w-5/6 md:w-2/3">
 
-        /* <UserForm isEdit={false} /> 
+        <UserForm isEdit={false} />
       </section>
     </div>
   );

@@ -1,12 +1,13 @@
 import userApiClient from "@/lib/UserApiClient";
-import { PaginatedUserResponseInterface } from "@/types/PaginatedUserResponseInterface";
-import { PaginationInterface } from "@/types/PaginationInterface";
+import { PaginatedUserFieldsInterface, PaginatedUserResponseInterface } from "@/types/PaginatedUserResponseInterface";
+import { SearchInput } from "@/types/SearchInputInterface";
 
-export const getUsers = async (paginationParams?: PaginationInterface, onlyInactive?: boolean): Promise<PaginatedUserResponseInterface> => {
-        const response = await userApiClient.get<PaginatedUserResponseInterface>(`/users${onlyInactive && "/inactives"}`, {
+export const getUsers = async (paginationParams?: SearchInput, onlyInactive?: boolean): Promise<PaginatedUserFieldsInterface> => {
+        const response = await userApiClient.get<PaginatedUserResponseInterface>(`/users${onlyInactive ? "/inactives" : ""}`, {
                 ...(paginationParams && {
                         params: paginationParams
                 })
         });
-        return response.data;
+        console.log(response.data)
+        return response.data.data;
 }
