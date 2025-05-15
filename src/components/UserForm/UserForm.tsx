@@ -1,5 +1,6 @@
 "use client";
 
+import { SignupUser } from "@/api/signup-user";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -38,8 +39,14 @@ const UserForm = ({ isEdit, data }: Props) => {
     },
   });
 
-  const onSubmit = (formData: SignupUserSchema) => {
-    console.log("Dados do formulário:", formData);
+  const onSubmit = async (formData: SignupUserSchema) => {
+    try{
+      await SignupUser(formData);
+      form.reset()
+      alert("Usuário criado com sucesso")
+    } catch(error){
+      alert(error)
+    }
   };
 
   return (
@@ -49,102 +56,103 @@ const UserForm = ({ isEdit, data }: Props) => {
           {isEdit ? "Editar Usuário" : "Cadastrar Usuário"}
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-1 md:p-6">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="grid grid-cols-2 gap-5"
+  onSubmit={form.handleSubmit(onSubmit)}
+  className="flex flex-row flex-wrap"
+>
+  <FormField
+    control={form.control}
+    name="name"
+    render={({ field }) => (
+      <FormItem className="w-full md:w-1/2 min-h-[96px] p-0 md:p-2">
+        <FormLabel>Nome</FormLabel>
+        <FormControl>
+          <Input
+            className="bg-white text-zinc-900 h-10 w-full"
+            placeholder="David Bowie"
+            {...field}
+          />
+        </FormControl>
+        <FormMessage className="text-xs text-red-500 mt-1" />
+      </FormItem>
+    )}
+  />
+
+  <FormField
+    control={form.control}
+    name="email"
+    render={({ field }) => (
+      <FormItem className="w-full md:w-1/2 min-h-[96px] p-0 md:p-2">
+        <FormLabel>Email</FormLabel>
+        <FormControl>
+          <Input
+            className="bg-white text-zinc-900 h-10 w-full"
+            placeholder="david@bowie.com"
+            type="email"
+            {...field}
+          />
+        </FormControl>
+        <FormMessage className="text-xs text-red-500 mt-1" />
+      </FormItem>
+    )}
+  />
+
+  <FormField
+    control={form.control}
+    name="password"
+    render={({ field }) => (
+      <FormItem className="w-full md:w-1/2 min-h-[96px] p-0 md:p-2">
+        <FormLabel>Senha</FormLabel>
+        <FormControl>
+          <Input
+            className="bg-white text-zinc-900 h-10 w-full"
+            placeholder="themanwhofelltoearth"
+            type="password"
+            {...field}
+          />
+        </FormControl>
+        <FormMessage className="text-xs text-red-500 mt-1" />
+      </FormItem>
+    )}
+  />
+
+  <FormField
+    control={form.control}
+    name="role"
+    render={({ field }) => (
+      <FormItem className="w-full md:w-1/2 min-h-[96px] p-0 md:p-2">
+        <FormLabel>Perfil</FormLabel>
+        <FormControl>
+          <Select
+            onValueChange={field.onChange}
+            defaultValue={field.value}
           >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="min-h-[90px]  flex flex-col items-start">
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-white text-zinc-900 h-10"
-                      placeholder="David Bowie"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs text-red-500 mt-1" />
-                </FormItem>
-              )}
-            />
+            <SelectTrigger className="text-black bg-white w-full h-10">
+              <SelectValue placeholder="Selecione um perfil" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="USER">Usuário</SelectItem>
+              <SelectItem value="ADMIN">Administrador</SelectItem>
+            </SelectContent>
+          </Select>
+        </FormControl>
+        <FormMessage className="text-xs text-red-500 mt-1" />
+      </FormItem>
+    )}
+  />
 
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="min-h-[90px]  flex flex-col items-start">
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-white text-zinc-900 h-10"
-                      placeholder="david@bowie.com"
-                      type="email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs text-red-500 mt-1" />
-                </FormItem>
-              )}
-            />
+  <div className="w-full flex justify-end mt-4">
+    <Button
+      type="submit"
+      className="bg-orange-400 text-white cursor-pointer w-full md:w-1/6 p-4 min-w-[100px]"
+    >
+      {isEdit ? "Salvar Alterações" : "Cadastrar"}
+    </Button>
+  </div>
+</form>
 
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem className="min-h-[90px]  flex flex-col items-start">
-                  <FormLabel>Senha</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-white text-zinc-900 h-10"
-                      placeholder="themanwhofelltoearth"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs text-red-500 mt-1" />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem className="min-h-[90px]  flex flex-col items-start">
-                  <FormLabel>Perfil</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="text-black bg-white w-full h-10">
-                        <SelectValue placeholder="Selecione um perfil" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="USER">Usuário</SelectItem>
-                        <SelectItem value="ADMIN">Administrador</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage className="text-xs text-red-500 mt-1" />
-                </FormItem>
-              )}
-            />
-
-            <div className="col-span-2 flex justify-end mt-4">
-              <Button
-                type="submit"
-                className="bg-orange-400 text-white cursor-pointer w-1/6 p-4"
-              >
-                {isEdit ? "Salvar Alterações" : "Cadastrar"}
-              </Button>
-            </div>
-          </form>
         </Form>
       </CardContent>
     </Card>

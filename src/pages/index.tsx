@@ -1,5 +1,6 @@
 import CardLogin from "@/components/CardLogin";
 import background from "../../public/background.png";
+import UserForm from "@/components/UserForm/UserForm";
 
 export default function Home() {
   return (
@@ -13,10 +14,10 @@ export default function Home() {
         backgroundAttachment: "fixed",
       }}
     >
-      <section className="w-2/3">
-        <CardLogin />
-        {/* <UserTable />
-        <UserForm isEdit={false} /> */}
+      <section className="w-5/6 md:w-2/3">
+        {/* <CardLogin /> */}
+        {/* <UserTable />*/}
+        <UserForm isEdit={false} /> 
       </section>
     </div>
   );
