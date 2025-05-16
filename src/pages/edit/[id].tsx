@@ -1,6 +1,6 @@
 import { getUserById } from "@/api/get-user-by-id";
-import SkeletonUserForm from "@/components/SkeletonUserForm/SkeletonUserForm";
-import UserForm from "@/components/UserForm/UserForm";
+import SkeletonUserForm from "@/components/SkeletonUserForm";
+import UserForm from "@/components/UserForm";
 import background from "@/public/background.png";
 import { UserResponseInterface } from "@/types/UserResponseInterface";
 import { useRouter } from "next/router";

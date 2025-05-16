@@ -6,10 +6,11 @@ import router from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import PaginationControls from "../PaginationControls";
-import SkeletonTable from "../SkeletonTable/SkeletonTable";
+import SkeletonTable from "../SkeletonTable";
 import TableComponent from "../TableComponent";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
 
 const UserTable = () => {
   const [data, setData] = useState<PaginatedUserFieldsInterface>();
@@ -68,30 +69,37 @@ const UserTable = () => {
       <Toaster position="bottom-right" richColors />
       <CardHeader className="text-center">
         <CardTitle className="text-3xl pt-6">Usuários</CardTitle>
-        <div className="flex flex-col gap-4 pt-4">
-          <Input
-            type="search"
-            placeholder="Buscar por nome"
-            className="w-full p-2 rounded-lg border border-solid border-emerald-400/70"
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1); // Resetar para primeira página
-            }}
-            value={search}
-          />
-          <select
-            value={role || ""}
-            onChange={(e) => {
-              const selected = e.target.value;
-              setRole(selected === "" ? undefined : (selected as "ADMIN" | "USER"));
-              setPage(1); // Resetar para primeira página
-            }}
-            className="w-full p-2 rounded-lg border border-solid border-emerald-400/70 bg-emerald-500/70 text-white"
-          >
-            <option value="">Todos</option>
-            <option value="ADMIN">Administrador</option>
-            <option value="USER">Usuário</option>
-          </select>
+        <div className="flex flex-row flex-wrap justify-between gap-4 pt-4">
+          <article className="w-full flex flex-col md:w-1/5 text-sm">
+            <Label className="w-full text-sm">Pesquisar</Label>
+            <Input
+              type="search"
+              placeholder="Buscar por nome"
+              className="w-full  p-2 rounded-lg border border-solid border-emerald-400/70 bg-white text-zinc-900"
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              value={search}
+            />
+          </article>
+
+          <article className="w-full flex flex-col md:w-1/5 text-sm">
+            <Label className="w-full text-sm">Perfil</Label>
+            <select
+              value={role || ""}
+              onChange={(e) => {
+                const selected = e.target.value;
+                setRole(selected === "" ? undefined : (selected as "ADMIN" | "USER"));
+                setPage(1); // Resetar para primeira página
+              }}
+              className="w-full p-2 rounded-lg border border-solid border-emerald-400/70 bg-white text-zinc-900"
+            >
+              <option value="">Todos</option>
+              <option value="ADMIN">Administrador</option>
+              <option value="USER">Usuário</option>
+            </select>
+          </article>
         </div>
       </CardHeader>
 
@@ -139,7 +147,7 @@ const UserTable = () => {
                 { key: "name", label: "Nome" },
                 { key: "email", label: "Email" },
                 { key: "createdAt", label: "Criado em" },
-                { key: "updatedAt", label: "Atualizado em" },
+                { key: "lastLoginAt", label: "Ultimo Acesso" },
               ]}
               className="w-full"
               onEdit={onEdit}

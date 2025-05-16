@@ -2,7 +2,8 @@ import { ColumnInterface } from "@/types/ColumnInterface";
 import { faPenToSquare, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-import DeleteDialog from "./DeleteDialog/DeleteDialog";
+import DeleteDialog from "./DeleteDialog";
+import { formatDate } from "@/lib/utils";
 
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,6 +33,8 @@ const TableComponent = ({
       setDeleteId(null);
     }
   };
+
+  console.log(data)
 
   return (
     <>
@@ -67,7 +70,10 @@ const TableComponent = ({
                       key={column.key}
                       className="px-6 py-2 md:px-9 md:py-3 text-sm md:text-md"
                     >
-                      {row[column.key]}
+                      {(row[column.key] instanceof Date ||
+                        (typeof row[column.key] === "string" && !isNaN(new Date(row[column.key]).getTime())))
+                        ? formatDate(row[column.key])
+                        : row[column.key]}
                     </td>
                   ))}
                   {onEdit && (

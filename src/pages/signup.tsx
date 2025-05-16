@@ -1,6 +1,6 @@
 'use client'
 import background from "../../public/background.png";
-import UserForm from "@/components/UserForm/UserForm";
+import UserForm from "@/components/UserForm";
 
 export default function Signup() {
   return (
