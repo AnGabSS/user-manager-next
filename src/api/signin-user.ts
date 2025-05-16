@@ -4,7 +4,7 @@ import { TokenInterface } from "@/types/TokenInterface";
 
 export const SigninUser = async (userData: SigninUserSchema) => {
   const response = await userApiClient.post<TokenInterface>(
-    "/users/login",
+    "/users/auth/login",
     userData
   );
   console.log(response.data);

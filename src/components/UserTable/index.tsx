@@ -9,16 +9,20 @@ import PaginationControls from "../PaginationControls";
 import SkeletonTable from "../SkeletonTable/SkeletonTable";
 import TableComponent from "../TableComponent";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Select } from "../ui/select";
+import { Input } from "../ui/input";
 
 const UserTable = () => {
   const [data, setData] = useState<PaginatedUserFieldsInterface>();
   const [type, setType] = useState<"all" | "inactive">("all");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
+  const [search, setSearch] = useState("");
+  const [role, setRole] = useState<"ADMIN" | "USER">();
 
   const _getUsers = async () => {
     try {
-      const users = await getUsers({ page, perPage }, type === "inactive");
+      const users = await getUsers({ page, perPage, filter: search, ...(role && { role }) }, type === "inactive");
       setData(users);
     } catch (error) {
       if (isAxiosError(error) && error.code === "401") {
@@ -62,13 +66,26 @@ const UserTable = () => {
       <Toaster position="bottom-right" richColors />
       <CardHeader className="text-center">
         <CardTitle className="text-3xl pt-6">Usuários</CardTitle>
+        <Input
+          type="search"
+          placeholder="Buscar por nome"
+          className="w-full p-2 rounded-lg border border-solid border-emerald-400/70"
+          onChange={(e) => setSearch(e.target.value)}
+          value={search}
+        />
+        <Select
+          value={role}
+        >
+          <option>Todos</option>
+          <option value="ADMIN">Administrador</option>
+          <option value="USER">Usuário</option>
+        </Select>
       </CardHeader>
       <CardContent className="m-0 p-0">
         <nav className="flex justify-center gap-6 text-lg px-4 pb-4">
           <article
-            className={`hover:text-orange-300 cursor-pointer hover:bg-emerald-400/50 rounded-xl px-4 py-2 ${
-              type === "all" ? "bg-emerald-400/50" : ""
-            }`}
+            className={`hover:text-orange-300 cursor-pointer hover:bg-emerald-400/50 rounded-xl px-4 py-2 ${type === "all" ? "bg-emerald-400/50" : ""
+              }`}
             onClick={() => {
               setPage(1);
               setType("all");
@@ -78,9 +95,8 @@ const UserTable = () => {
             {type === "all" && <hr className="border-b-2" />}
           </article>
           <article
-            className={`hover:text-orange-300 cursor-pointer hover:bg-emerald-400/50 rounded-xl px-4 py-2 ${
-              type === "inactive" ? "bg-emerald-400/50" : ""
-            }`}
+            className={`hover:text-orange-300 cursor-pointer hover:bg-emerald-400/50 rounded-xl px-4 py-2 ${type === "inactive" ? "bg-emerald-400/50" : ""
+              }`}
             onClick={() => {
               setPage(1);
               setType("inactive");
