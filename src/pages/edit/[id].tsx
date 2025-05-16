@@ -14,8 +14,6 @@ export default function Edit() {
   const { id } = router.query;
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-
     const fetchUser = async () => {
       if (!id || typeof id !== "string") return;
 
@@ -23,20 +21,19 @@ export default function Edit() {
         const response = await getUserById(id);
         setUser(response);
         setLoading(false);
-      } catch (err) {
+      } catch {
         setLoading(false);
       }
     };
 
-    // Inicia o timeout de 40 segundos
-    timeoutId = setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setLoading(false);
       setTimeoutReached(true);
     }, 40000);
 
     fetchUser();
 
-    return () => clearTimeout(timeoutId); // limpa o timeout se desmontar
+    return () => clearTimeout(timeoutId);
   }, [id]);
 
   return (

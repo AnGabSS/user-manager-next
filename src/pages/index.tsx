@@ -1,6 +1,5 @@
 import CardLogin from "@/components/CardLogin";
 import background from "../../public/background.png";
-import UserForm from "@/components/UserForm/UserForm";
 
 export default function Home() {
   return (

@@ -62,7 +62,7 @@ const UserForm = ({ isEdit, setIsEdit, data }: Props) => {
     }
   }, [data, form]);
 
-  const showAxiosError = (error: AxiosError) => {
+  const showAxiosError = (error: AxiosError): string => {
     const status = error.response?.status;
     switch (status) {
       case 409:
@@ -74,7 +74,7 @@ const UserForm = ({ isEdit, setIsEdit, data }: Props) => {
       case 422:
         return "Dados inválidos.";
       default:
-        return error.response?.data.message;
+        return "Erro inesperado.";
     }
   };
 

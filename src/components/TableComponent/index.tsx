@@ -5,6 +5,7 @@ import { useState } from "react";
 import DeleteDialog from "./DeleteDialog/DeleteDialog";
 
 interface Props {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   columns: ColumnInterface[];
   className?: string;
