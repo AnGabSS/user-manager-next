@@ -6,7 +6,7 @@ import {
   Form, FormControl, FormField, FormItem, FormLabel, FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Toaster, toast } from "sonner";
+import { Toaster } from "sonner";
 import { useUserForm } from "@/hooks/useUserForm";
 import { handleUserSubmit } from "@/lib/handleUserSubmit";
 import UpdatePasswordDialog from "./UpdatePassword";

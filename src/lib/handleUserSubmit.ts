@@ -1,6 +1,6 @@
 import { SignupUser } from "@/api/signup-user";
 import { UpdateUser } from "@/api/update-user";
-import { isAxiosError } from "axios";
+import { AxiosError, isAxiosError } from "axios";
 import { SignupUserSchema } from "@/schemas/SignupUserSchema";
 import { UseFormReturn } from "react-hook-form";
 import { toast } from "sonner";
@@ -22,7 +22,7 @@ export const handleUserSubmit = async ({
     setIsEdit,
     setIsLoading,
 }: HandleUserSubmitParams) => {
-    const showAxiosError = (error: any): string => {
+    const showAxiosError = (error: AxiosError): string => {
         const status = error?.response?.status;
         switch (status) {
             case 409:
