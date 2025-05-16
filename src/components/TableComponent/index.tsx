@@ -34,7 +34,6 @@ const TableComponent = ({
     }
   };
 
-  console.log(data)
 
   return (
     <>

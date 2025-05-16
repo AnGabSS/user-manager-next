@@ -14,7 +14,6 @@ export const useGoogleSignup = () => {
       await SigupGoogle(accessToken);
     },
     onError: (error) => {
-      console.log(error);
       toast.error("Erro ao fazer login com o Google.", {
         description: "Tente novamente mais tarde.",
       });

@@ -7,7 +7,6 @@ export const SigninUser = async (userData: SigninUserSchema) => {
     "/users/auth/login",
     userData
   );
-  console.log(response.data);
   sessionStorage.setItem("token", response.data.accessToken);
   return response.data;
 };
