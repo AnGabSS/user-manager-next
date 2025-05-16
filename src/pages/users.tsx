@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import UserTable from "@/components/UserTable";
 import background from "../../public/background.png";
 
@@ -14,7 +14,7 @@ export default function Users() {
         backgroundAttachment: "fixed",
       }}
     >
-      <section className="w-5/6 md:w-2/3">
+      <section className="w-full md:w-7/8">
         <UserTable />
       </section>
     </div>

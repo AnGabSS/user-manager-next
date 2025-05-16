@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGooglePlus } from "@fortawesome/free-brands-svg-icons";
 import { Label } from "@radix-ui/react-label";
 import { Button } from "../ui/button";
 import {
@@ -11,12 +9,16 @@ import {
 } from "../ui/card";
 import { Input } from "../ui/input";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signinUserSchema, SigninUserSchema } from "@/schemas/SigninUserSchema";
 import { SigninUser } from "@/api/signin-user";
-import { toast, Toaster } from "sonner";
+import { useGoogleSignup } from "@/hooks/useGoogleSignup";
+import { signinUserSchema, SigninUserSchema } from "@/schemas/SigninUserSchema";
+import { faGooglePlus } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { isAxiosError } from "axios";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { toast, Toaster } from "sonner";
 
 const CardLogin = () => {
   const {
@@ -27,40 +29,53 @@ const CardLogin = () => {
     resolver: zodResolver(signinUserSchema),
   });
 
+  const showErrorMessage = (code?: number) => {
+    switch (code) {
+      case 400:
+        return "Senha incorreta.";
+      case 404:
+        return "Usuário não encontrado.";
+      default:
+        return "Erro inesperado.";
+    }
+  };
+
   const onSubmit = async (data: SigninUserSchema) => {
-  try {
-    const response = await SigninUser(data);
+    try {
+      const response = await SigninUser(data);
 
-    if (response.role === "ADMIN") {
-      window.location.href = "/users";
-    } else {
-      window.location.href = `/edit/${response.id}`;
-    }
-
-  } catch (err) {
-    if (isAxiosError(err) && err.response?.status === 400) {
-      toast.error("Erro ao fazer login.", {
-        description: "Verifique seu email e senha.",
-        action: {
-          label: "Tentar novamente",
-          onClick: () => {
+      if (response.role === "ADMIN") {
+        window.location.href = "/users";
+      } else {
+        window.location.href = `/edit/${response.id}`;
+      }
+    } catch (err) {
+      if (isAxiosError(err)) {
+        toast.error("Erro ao fazer login.", {
+          description: showErrorMessage(err.response?.status),
+          cancel: {
+            label: "X",
+            onClick: () => {
+              toast.dismiss(err.response?.status);
+            },
           },
-        },
-      });
-    } else {
-      toast.error("Erro inesperado.", {
-        description: "Tente novamente mais tarde.",
-      });
+        });
+      } else {
+        toast.error("Erro inesperado.", {
+          description: "Tente novamente mais tarde.",
+        });
+      }
     }
-  }
-};
+  };
 
   const buttonStyle = "bg-orange-400 text-white cursor-pointer w-full p-6";
   const inputStyle = "bg-white text-zinc-900 w-full p-6";
 
+  const googleSignup = useGoogleSignup();
+
   return (
     <Card className="w-full h-full p-10 bg-emerald-500/80 text-white shadow-xl rounded-lg">
-            <Toaster position="bottom-right" richColors />
+      <Toaster position="bottom-right" richColors />
 
       <CardHeader className="text-center">
         <CardTitle className="text-3xl">Login</CardTitle>
@@ -79,7 +94,9 @@ const CardLogin = () => {
                 {...register("email")}
               />
               {errors.email && (
-                <span className="text-red-200 text-sm">{errors.email.message}</span>
+                <span className="text-red-200 text-sm">
+                  {errors.email.message}
+                </span>
               )}
             </div>
 
@@ -93,11 +110,17 @@ const CardLogin = () => {
                 {...register("password")}
               />
               {errors.password && (
-                <span className="text-red-200 text-sm">{errors.password.message}</span>
+                <span className="text-red-200 text-sm">
+                  {errors.password.message}
+                </span>
               )}
             </div>
 
-            <Button type="submit" disabled={isSubmitting} className={buttonStyle}>
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className={buttonStyle}
+            >
               {isSubmitting ? "Entrando..." : "Entrar"}
             </Button>
           </div>
@@ -108,20 +131,25 @@ const CardLogin = () => {
         <article className="flex flex-col items-center justify-center gap-2 w-full">
           <p>ou</p>
 
-          <Button className={buttonStyle}>
-            <FontAwesomeIcon icon={faGooglePlus} className="text-emerald-600 mr-2" />
-            Logar com Google
-          </Button>
+          <div className="w-full">
+            <Button className={buttonStyle} onClick={() => googleSignup()}>
+              <FontAwesomeIcon
+                icon={faGooglePlus}
+                className="text-emerald-600 mr-2"
+              />
+              Cadastrar com Google
+            </Button>
+          </div>
         </article>
 
         <Label className="ml-2">
           Se você não tem conta,{" "}
-          <a
+          <Link
             href="/signup"
             className="hover:underline text-orange-600 hover:text-green-400"
           >
             clique aqui
-          </a>
+          </Link>
         </Label>
       </CardFooter>
     </Card>
